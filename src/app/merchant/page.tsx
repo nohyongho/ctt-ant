@@ -24,8 +24,18 @@ import {
   CheckCircle2,
   Star,
   Package,
-  Banknote
+  Banknote,
+  Store, // Added from diff
+  ChevronRight, // Added from diff
+  Plus, // Added from diff
+  Search, // Added from diff
+  Filter, // Added from diff
+  MoreHorizontal, // Added from diff
+  Video, // Added from diff
+  Image as ImageIcon, // Merged and renamed
+  FileSpreadsheet // Added from diff
 } from 'lucide-react';
+import GoogleSheetsLog from '@/components/merchant/GoogleSheetsLog'; // Added from diff
 import { Button } from '@/components/ui/button';
 import { Card, CardContent } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
@@ -36,7 +46,6 @@ import {
   DialogHeader,
   DialogTitle,
 } from '@/components/ui/dialog';
-import { ImageIcon } from 'lucide-react';
 import {
   merchantProfileService,
   outletService,
@@ -220,9 +229,9 @@ export default function MerchantHomePage() {
   ];
 
   const recentActivities = [
-    { type: 'coupon', message: '쿠폰 "10% 할인" 사용됨', time: '5분 전', icon: Ticket },
-    { type: 'order', message: '새 주문 #1234 접수', time: '12분 전', icon: ShoppingBag },
-    { type: 'review', message: '새 리뷰 ★★★★★', time: '1시간 전', icon: Star },
+    { id: '1', type: 'use', message: '쿠폰 "10% 할인" 사용됨', time: '5분 전', store: '강남점' }, // Modified from diff
+    { id: '2', type: 'issue', message: '새 쿠폰 "무료 커피" 발급', time: '12분 전', store: '본점' }, // Modified from diff
+    { id: '3', type: 'review', message: '새 리뷰 ★★★★★', time: '1시간 전', store: '홍대점' }, // Modified from diff
   ];
 
   return (
@@ -563,142 +572,122 @@ export default function MerchantHomePage() {
           </Card>
         </motion.div>
 
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 0.5 }}
-        >
-          <div className="flex items-center justify-between mb-3">
-            <h3 className="text-white font-semibold flex items-center gap-2">
-              <Clock className="w-4 h-4" />
+        {/* Recent Activity & Google Sheets Log */}
+        <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+          <div className="lg:col-span-2 space-y-6">
+            <h2 className="text-xl font-bold flex items-center gap-2">
+              <Clock className="w-5 h-5 text-primary" />
               최근 활동
-            </h3>
-            <Button
-              variant="ghost"
-              size="sm"
-              className="text-white/70 hover:text-white text-xs"
-            >
-              전체보기
-            </Button>
-          </div>
-
-          <Card className="glass-card">
-            <CardContent className="p-4 space-y-3">
-              {recentActivities.map((activity, index) => {
-                const Icon = activity.icon;
-                return (
-                  <motion.div
-                    key={index}
-                    initial={{ opacity: 0, x: -20 }}
-                    animate={{ opacity: 1, x: 0 }}
-                    transition={{ delay: 0.5 + index * 0.1 }}
-                    className="flex items-center gap-3 p-2 rounded-lg hover:bg-muted/50 transition-colors"
-                  >
-                    <div className="w-8 h-8 rounded-lg bg-primary/10 flex items-center justify-center">
-                      <Icon className="w-4 h-4 text-primary" />
-                    </div>
-                    <div className="flex-1 min-w-0">
-                      <p className="text-sm font-medium truncate">{activity.message}</p>
-                      <p className="text-xs text-muted-foreground">{activity.time}</p>
-                    </div>
-                  </motion.div>
-                );
-              })}
-            </CardContent>
-          </Card>
-        </motion.div>
-
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 0.6 }}
-        >
-          <div className="flex items-center justify-between mb-3">
-            <h3 className="text-white font-semibold flex items-center gap-2">
-              <MapPin className="w-4 h-4" />
-              내 매장
-            </h3>
-            <Button
-              variant="ghost"
-              size="sm"
-              className="text-white/70 hover:text-white"
-              onClick={() => router.push('/merchant/outlets')}
-            >
-              전체보기
-              <ArrowRight className="w-4 h-4 ml-1" />
-            </Button>
-          </div>
-
-          <div className="space-y-3">
-            {outlets.slice(0, 2).map((outlet, index) => (
-              <motion.div
-                key={outlet.id}
-                initial={{ opacity: 0, x: -20 }}
-                animate={{ opacity: 1, x: 0 }}
-                transition={{ delay: 0.6 + index * 0.1 }}
-              >
-                <Card
-                  className="glass-card hover-lift cursor-pointer group"
-                  onClick={() => router.push(`/merchant/outlets/${outlet.id}`)}
-                >
-                  <CardContent className="p-4">
+            </h2>
+            <div className="space-y-4">
+              {recentActivities.map((activity) => (
+                <Card key={activity.id} className="glass-card hover:bg-white/5 transition-colors cursor-pointer group">
+                  <CardContent className="p-4 flex items-center justify-between">
                     <div className="flex items-center gap-4">
-                      {outlet.imageUrl ? (
-                        <img
-                          src={outlet.imageUrl}
-                          alt={outlet.name}
-                          className="w-16 h-16 rounded-xl object-cover shadow-lg group-hover:scale-105 transition-transform"
-                        />
-                      ) : (
-                        <div className="w-16 h-16 rounded-xl bg-gradient-to-br from-gray-200 to-gray-300 dark:from-gray-700 dark:to-gray-800 flex items-center justify-center">
-                          <MapPin className="w-6 h-6 text-muted-foreground" />
-                        </div>
-                      )}
-                      <div className="flex-1 min-w-0">
-                        <div className="flex items-center gap-2 mb-1">
-                          <h4 className="font-semibold truncate">{outlet.name}</h4>
-                          {outlet.status === 'ACTIVE' && (
-                            <span className="w-2 h-2 bg-green-500 rounded-full animate-pulse" />
-                          )}
-                        </div>
-                        <p className="text-sm text-muted-foreground truncate">{outlet.address}</p>
-                        <div className="flex items-center gap-2 mt-2">
-                          <Badge
-                            variant="outline"
-                            className={`text-xs ${outlet.status === 'ACTIVE' ? 'border-emerald-500 text-emerald-500' : 'border-gray-500 text-gray-500'}`}
-                          >
-                            {outlet.status === 'ACTIVE' ? '영업중' : '휴업'}
-                          </Badge>
-                          <span className="text-xs text-muted-foreground">
-                            • 오늘 {Math.floor(Math.random() * 50)}건
-                          </span>
-                        </div>
+                      <div className={`p-2 rounded-full ${activity.type === 'issue' ? 'bg-blue-500/20 text-blue-400' :
+                          activity.type === 'use' ? 'bg-green-500/20 text-green-400' :
+                            'bg-purple-500/20 text-purple-400'
+                        }`}>
+                        {activity.type === 'issue' ? <Ticket className="w-4 h-4" /> :
+                          activity.type === 'use' ? <Gift className="w-4 h-4" /> :
+                            <Users className="w-4 h-4" />}
                       </div>
-                      <ArrowRight className="w-5 h-5 text-muted-foreground group-hover:translate-x-1 group-hover:text-primary transition-all" />
+                      <div>
+                        <p className="font-medium group-hover:text-primary transition-colors">
+                          {activity.message}
+                        </p>
+                        <p className="text-xs text-muted-foreground">
+                          {activity.time} · {activity.store}
+                        </p>
+                      </div>
                     </div>
+                    <ChevronRight className="w-4 h-4 text-muted-foreground opacity-0 group-hover:opacity-100 transition-opacity" />
                   </CardContent>
                 </Card>
-              </motion.div>
-            ))}
+              ))}
+            </div>
 
-            {outlets.length === 0 && (
-              <Card className="glass-card">
-                <CardContent className="p-8 text-center">
-                  <div className="w-16 h-16 mx-auto mb-4 rounded-2xl bg-gradient-to-br from-violet-500/20 to-purple-500/20 flex items-center justify-center">
-                    <MapPin className="w-8 h-8 text-violet-500" />
-                  </div>
-                  <p className="text-muted-foreground mb-4">등록된 매장이 없습니다</p>
-                  <Button
-                    onClick={() => router.push('/merchant/outlets/new')}
-                    className="bg-gradient-to-r from-violet-500 to-purple-600 hover:from-violet-600 hover:to-purple-700"
-                  >
-                    매장 등록하기
-                  </Button>
-                </CardContent>
-              </Card>
-            )}
+            {/* Google Sheets Log Integration */}
+            <GoogleSheetsLog />
           </div>
-        </motion.div>
+
+          <div className="space-y-6">
+            <h2 className="text-xl font-bold flex items-center gap-2">
+              <Store className="w-5 h-5 text-primary" />
+              내 매장
+            </h2>
+            <div className="space-y-3">
+              {outlets.slice(0, 2).map((outlet, index) => (
+                <motion.div
+                  key={outlet.id}
+                  initial={{ opacity: 0, x: -20 }}
+                  animate={{ opacity: 1, x: 0 }}
+                  transition={{ delay: 0.6 + index * 0.1 }}
+                >
+                  <Card
+                    className="glass-card hover-lift cursor-pointer group"
+                    onClick={() => router.push(`/merchant/outlets/${outlet.id}`)}
+                  >
+                    <CardContent className="p-4">
+                      <div className="flex items-center gap-4">
+                        {outlet.imageUrl ? (
+                          // eslint-disable-next-line @next/next/no-img-element
+                          <img
+                            src={outlet.imageUrl}
+                            alt={outlet.name}
+                            className="w-16 h-16 rounded-xl object-cover shadow-lg group-hover:scale-105 transition-transform"
+                          />
+                        ) : (
+                          <div className="w-16 h-16 rounded-xl bg-gradient-to-br from-gray-200 to-gray-300 dark:from-gray-700 dark:to-gray-800 flex items-center justify-center">
+                            <MapPin className="w-6 h-6 text-muted-foreground" />
+                          </div>
+                        )}
+                        <div className="flex-1 min-w-0">
+                          <div className="flex items-center gap-2 mb-1">
+                            <h4 className="font-semibold truncate">{outlet.name}</h4>
+                            {outlet.status === 'ACTIVE' && (
+                              <span className="w-2 h-2 bg-green-500 rounded-full animate-pulse" />
+                            )}
+                          </div>
+                          <p className="text-sm text-muted-foreground truncate">{outlet.address}</p>
+                          <div className="flex items-center gap-2 mt-2">
+                            <Badge
+                              variant="outline"
+                              className={`text-xs ${outlet.status === 'ACTIVE' ? 'border-emerald-500 text-emerald-500' : 'border-gray-500 text-gray-500'}`}
+                            >
+                              {outlet.status === 'ACTIVE' ? '영업중' : '휴업'}
+                            </Badge>
+                            <span className="text-xs text-muted-foreground">
+                              • 오늘 {Math.floor(Math.random() * 50)}건
+                            </span>
+                          </div>
+                        </div>
+                        <ChevronRight className="w-5 h-5 text-muted-foreground group-hover:translate-x-1 group-hover:text-primary transition-all" />
+                      </div>
+                    </CardContent>
+                  </Card>
+                </motion.div>
+              ))}
+
+              {outlets.length === 0 && (
+                <Card className="glass-card">
+                  <CardContent className="p-8 text-center">
+                    <div className="w-16 h-16 mx-auto mb-4 rounded-2xl bg-gradient-to-br from-violet-500/20 to-purple-500/20 flex items-center justify-center">
+                      <MapPin className="w-8 h-8 text-violet-500" />
+                    </div>
+                    <p className="text-muted-foreground mb-4">등록된 매장이 없습니다</p>
+                    <Button
+                      onClick={() => router.push('/merchant/outlets/new')}
+                      className="bg-gradient-to-r from-violet-500 to-purple-600 hover:from-violet-600 hover:to-purple-700"
+                    >
+                      매장 등록하기
+                    </Button>
+                  </CardContent>
+                </Card>
+              )}
+            </div>
+          </div>
+        </div>
 
         <motion.div
           initial={{ opacity: 0, y: 20 }}
@@ -715,7 +704,7 @@ export default function MerchantHomePage() {
             쿠폰 발급하기
           </Button>
         </motion.div>
-      </div>
+      </div >
 
       <Dialog open={isDetailOpen} onOpenChange={setIsDetailOpen}>
         <DialogContent className="glass-card max-w-lg">
@@ -737,6 +726,7 @@ export default function MerchantHomePage() {
                       className="w-full h-full object-contain"
                       controls
                       autoPlay
+                      playsInline
                     />
                   ) : (
                     // eslint-disable-next-line @next/next/no-img-element
@@ -793,13 +783,11 @@ export default function MerchantHomePage() {
 
               {/* Actions */}
               <div className="pt-4 border-t border-white/10 space-y-3">
-                <Button className="w-full bg-gradient-to-r from-blue-600 to-cyan-600 hover:from-blue-700 hover:to-cyan-700 h-12 text-lg font-bold shadow-lg shadow-blue-500/20">
-                  <div className="flex items-center gap-2">
-                    <svg viewBox="0 0 24 24" className="w-6 h-6 fill-current" xmlns="http://www.w3.org/2000/svg"><path d="M12.0002 0.000198364C5.38338 0.000198364 0.000198364 5.38338 0.000198364 12.0002C0.000198364 18.617 5.38338 24.0002 12.0002 24.0002C18.617 24.0002 24.0002 18.617 24.0002 12.0002C23.9918 5.38696 18.6134 0.00859833 12.0002 0.000198364ZM17.6102 17.5122L6.5002 16.5142L10.0222 6.5002L17.6102 17.5122Z" /></svg>
-                    Unity / VAN 결제 연동
-                  </div>
+                <Button className="w-full bg-gradient-to-r from-blue-500 to-cyan-600 hover:from-blue-600 hover:to-cyan-700 text-white font-bold h-12 text-lg shadow-lg shadow-blue-500/20">
+                  <CreditCard className="w-5 h-5 mr-2" />
+                  추후결제 모듈 연동
                 </Button>
-                <p className="text-center text-xs text-muted-foreground">
+                <p className="text-[10px] text-center text-muted-foreground mt-2">
                   * 유니티 앱 및 VAN 사 결제 모듈과 연동하여 실시간 쿠폰 발급을 처리합니다.
                 </p>
               </div>
@@ -807,6 +795,6 @@ export default function MerchantHomePage() {
           )}
         </DialogContent>
       </Dialog>
-    </div>
+    </div >
   );
 }
