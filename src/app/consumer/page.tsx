@@ -19,6 +19,7 @@ import { Badge } from '@/components/ui/badge';
 import { ScrollArea } from '@/components/ui/scroll-area';
 import { DarkToggle } from '@/components/theme/DarkToggle';
 import { toast } from 'sonner';
+import EventGameWindow from '@/components/consumer/EventGameWindow';
 
 // PRD 3.1.2.1 Global Type
 declare global {
@@ -129,22 +130,27 @@ export default function ConsumerEventPage() {
     }
   };
 
-  // PRD 3.1.6 Test Reward Trigger
-  const handleTestReward = () => {
-    const dummyReward: Reward = {
+  // 3D Game Reward Handler
+  const handleGameReward = (amount: number, label: string) => {
+    const newReward: Reward = {
       id: crypto.randomUUID(),
-      label: '테스트 AR 쿠폰 (버블 POP)',
-      amount: 10000,
+      label: label,
+      amount: amount,
       tier: currentStep as RewardTier,
       kind: 'COUPON',
       createdAt: new Date().toISOString(),
       qrToken: 'CTT-' + Math.random().toString(36).substr(2, 9).toUpperCase(),
     };
 
-    // Simulate Unity message call
-    if (window.onUnityMessage) {
-      window.onUnityMessage({ type: 'REWARD', payload: dummyReward });
-    }
+    setReward(newReward);
+    setShowWallet(true);
+    appendLog(`게임 리워드 획득: ${label} (${amount}원)`);
+    toast.success(`🎉 ${label} 획득!`);
+  };
+
+  // PRD 3.1.6 Test Reward Trigger (Legacy/Dev)
+  const handleTestReward = () => {
+    handleGameReward(10000, '테스트 AR 쿠폰');
   };
 
   return (
@@ -297,61 +303,11 @@ export default function ConsumerEventPage() {
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.2 }}
         >
-          <Card className="glass-card h-full">
-            <CardHeader>
-              <CardTitle className="flex items-center gap-2">
-                <Camera className="w-5 h-5 text-primary" />
-                AR 이벤트 참여
-              </CardTitle>
-              <CardDescription>
-                카메라 권한을 허용하고 비누방울을 터치하세요!
-              </CardDescription>
-            </CardHeader>
-            <CardContent className="space-y-6">
-              <div className="flex items-center justify-between p-4 rounded-lg border bg-card/50">
-                <span className="text-sm font-medium">카메라 권한 상태</span>
-                {cameraAllowed === true ? (
-                  <Badge variant="default" className="bg-green-500 hover:bg-green-600">
-                    <CheckCircle2 className="w-3 h-3 mr-1" /> 허용됨
-                  </Badge>
-                ) : cameraAllowed === false ? (
-                  <Badge variant="destructive">
-                    <XCircle className="w-3 h-3 mr-1" /> 거부됨
-                  </Badge>
-                ) : (
-                  <Badge variant="secondary">
-                    <AlertCircle className="w-3 h-3 mr-1" /> 미확인
-                  </Badge>
-                )}
-              </div>
-
-              {/* PRD 3.1.5.1 Camera Request Button */}
-              <Button
-                onClick={requestCameraPermission}
-                disabled={cameraAllowed === true}
-                className="w-full h-12 text-lg"
-                variant={cameraAllowed ? "outline" : "default"}
-              >
-                {cameraAllowed ? '카메라 준비 완료' : '카메라 권한 요청'}
-              </Button>
-
-              <div className="grid grid-cols-2 gap-3">
-                <Button variant="outline" onClick={() => {
-                  const next = Math.max(1, currentStep - 1);
-                  setCurrentStep(next);
-                  appendLog(`단계 버튼 클릭: ${currentStep} → ${next}`);
-                }}>
-                  이전 단계 (-1)
-                </Button>
-                <Button variant="outline" onClick={() => {
-                  const next = Math.min(5, currentStep + 1);
-                  setCurrentStep(next);
-                  appendLog(`단계 버튼 클릭: ${currentStep} → ${next}`);
-                }}>
-                  다음 단계 (+1)
-                </Button>
-              </div>
-            </CardContent>
+          <Card className="glass-card h-[500px] overflow-hidden relative border-0">
+            {/* 3D Game Window */}
+            <div className="absolute inset-0">
+              <EventGameWindow onCouponAcquired={handleGameReward} />
+            </div>
           </Card>
         </motion.div>
       </div>

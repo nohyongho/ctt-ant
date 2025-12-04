@@ -48,6 +48,7 @@ export interface MerchantCoupon {
   minPurchaseAmount?: number;
   maxDiscountAmount?: number;
   imageUrl?: string;
+  mediaType?: 'IMAGE' | 'VIDEO';
   validFrom: string;
   validUntil: string;
   totalQuantity: number;

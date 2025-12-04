@@ -288,6 +288,7 @@ export default function MerchantCouponsPage() {
       usedQuantity: 0,
       status: 'INACTIVE',
       imageUrl: newCoupon.imagePreview || undefined,
+      mediaType: newCoupon.image?.type.startsWith('video/') ? 'VIDEO' : 'IMAGE',
       createdAt: new Date().toISOString(),
     } as MerchantCoupon);
 

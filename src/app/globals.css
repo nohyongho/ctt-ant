@@ -182,6 +182,12 @@
     --led-color: #ffd93b;
     animation: led-breath 2.4s ease-in-out infinite;
   }
+
+  .led-btn-orange {
+    @apply bg-[#ff8800] text-white;
+    --led-color: #ff8800;
+    animation: led-breath 2.4s ease-in-out infinite;
+  }
 }
 
 /* PRD 3.2.3 Breathing Animation */
