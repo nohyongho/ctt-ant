@@ -23,7 +23,7 @@ export default function MissionOverlay({ lang }: MissionOverlayProps) {
             transition={{ type: "spring", bounce: 0.5 }}
             className="absolute top-4 left-4 right-4 z-20"
         >
-            <div className="relative bg-white/10 backdrop-blur-md border border-white/20 text-white rounded-3xl p-4 shadow-xl overflow-hidden">
+            <div className="relative text-[#FFD600] rounded-3xl p-4 overflow-hidden">
                 {/* Decorative Shapes */}
                 <div className="absolute top-0 right-0 w-16 h-16 bg-[#FFD600]/20 rounded-bl-full blur-xl" />
                 <div className="absolute bottom-0 left-0 w-8 h-8 bg-[#00C853]/20 rounded-tr-full blur-xl" />
@@ -34,7 +34,7 @@ export default function MissionOverlay({ lang }: MissionOverlayProps) {
                             <span className="bg-[#FFD600] text-black text-xs font-bold px-2 py-0.5 rounded-full shadow-[0_0_10px_rgba(255,214,0,0.5)]">
                                 {t.daily}
                             </span>
-                            <h3 className="font-bold text-lg text-[#00C853] drop-shadow-[0_0_5px_rgba(0,200,83,0.8)] tracking-wide" style={{ textShadow: '0 0 10px rgba(0,200,83,0.5)' }}>{t.title}</h3>
+                            <h3 className="font-bold text-lg text-[#00C853] tracking-wide">{t.title}</h3>
                         </div>
                         <p className="text-white/80 text-xs font-medium">{t.desc}</p>
                     </div>

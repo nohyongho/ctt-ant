@@ -497,8 +497,8 @@ export default function MerchantCouponsPage() {
                       <div className="absolute top-2 left-2">
                         <Badge
                           className={`${coupon.discountType === 'PERCENTAGE'
-                              ? 'bg-violet-500'
-                              : 'bg-blue-500'
+                            ? 'bg-violet-500'
+                            : 'bg-blue-500'
                             }`}
                         >
                           {coupon.discountType === 'PERCENTAGE' ? (
@@ -574,14 +574,14 @@ export default function MerchantCouponsPage() {
                         <div className="flex-1 text-right">
                           <span
                             className={`inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full text-xs font-medium ${coupon.status === 'ACTIVE'
-                                ? 'bg-emerald-500/10 text-emerald-500'
-                                : 'bg-gray-500/10 text-gray-500'
+                              ? 'bg-emerald-500/10 text-emerald-500'
+                              : 'bg-gray-500/10 text-gray-500'
                               }`}
                           >
                             <span
                               className={`w-1.5 h-1.5 rounded-full ${coupon.status === 'ACTIVE'
-                                  ? 'bg-emerald-500'
-                                  : 'bg-gray-500'
+                                ? 'bg-emerald-500'
+                                : 'bg-gray-500'
                                 }`}
                             />
                             {coupon.status === 'ACTIVE' ? '진행중' : '대기중'}
@@ -1083,7 +1083,7 @@ export default function MerchantCouponsPage() {
       </Dialog>
 
       {/* AI Assistant */}
-      <AIBunnyAssistant />
+      <AIBunnyAssistant userType="merchant" />
     </div>
   );
 }

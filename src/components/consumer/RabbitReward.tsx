@@ -42,7 +42,7 @@ export default function RabbitReward({ onComplete, rewardName, lang }: RabbitRew
                     initial={{ scale: 0, opacity: 0 }}
                     animate={{ scale: 1, opacity: 1 }}
                     transition={{ delay: 0.5 }}
-                    className="mb-4 bg-black/30 backdrop-blur-md px-6 py-4 rounded-2xl rounded-bl-none shadow-2xl border border-white/20"
+                    className="mb-4"
                 >
                     <p className="text-lg font-bold text-white flex items-center gap-2 drop-shadow-md">
                         <span className="text-2xl">🎉</span>

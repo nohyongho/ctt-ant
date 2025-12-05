@@ -130,7 +130,7 @@ export default function EventGameWindow({ onCouponAcquired, lang }: EventGameWin
     const [gems, setGems] = useState(initialGems);
     const [score, setScore] = useState(0);
     const [acquiredCount, setAcquiredCount] = useState(0);
-    const [isMaximized, setIsMaximized] = useState(false);
+    const [isMaximized, setIsMaximized] = useState(true);
     const [showRabbit, setShowRabbit] = useState(false);
     const [lastReward, setLastReward] = useState('');
     const [explosions, setExplosions] = useState<{ id: number; position: [number, number, number]; color: string }[]>([]);
