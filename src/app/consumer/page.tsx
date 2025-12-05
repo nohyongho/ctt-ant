@@ -91,12 +91,12 @@ export default function ConsumerPage() {
             initial={{ opacity: 0, scale: 0.8 }}
             animate={{ opacity: 1, scale: 1 }}
             exit={{ opacity: 0, scale: 0.8 }}
-            className="fixed inset-0 z-50 flex items-center justify-center bg-black/80 backdrop-blur-sm sm:p-4"
+            className="fixed inset-0 z-50 bg-black"
           >
-            <div className="relative w-full h-full sm:max-w-lg sm:aspect-[9/16] sm:max-h-[90vh] bg-slate-900 sm:rounded-3xl overflow-hidden shadow-2xl sm:border-4 border-white/20">
+            <div className="relative w-full h-full">
               <button
                 onClick={() => setShowGame(false)}
-                className="absolute top-4 right-4 z-50 w-10 h-10 rounded-full bg-[#00C853] border-2 border-white/50 shadow-[0_0_15px_rgba(0,200,83,0.6)] flex items-center justify-center text-white font-bold transition-transform active:scale-95 hover:bg-[#00E676]"
+                className="absolute top-4 right-16 z-[60] w-10 h-10 rounded-full bg-[#00C853] border-2 border-white/50 shadow-[0_0_15px_rgba(0,200,83,0.6)] flex items-center justify-center text-white font-bold transition-transform active:scale-95 hover:bg-[#00E676]"
               >
                 ✕
               </button>

@@ -290,8 +290,8 @@ export default function EventGameWindow({ onCouponAcquired, lang }: EventGameWin
                 </div>
             </div>
 
-            {/* Window Controls */}
-            <div className="absolute top-4 right-4 z-10 flex gap-2">
+            {/* Window Controls - Hidden since we are full screen */}
+            <div className="hidden">
                 <button
                     onClick={toggleMaximize}
                     className="p-2 bg-white/20 hover:bg-white/30 rounded-full backdrop-blur-md transition-colors border-2 border-white/40 z-50 cursor-pointer text-white"
