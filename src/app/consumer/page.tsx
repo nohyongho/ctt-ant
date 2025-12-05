@@ -96,7 +96,7 @@ export default function ConsumerPage() {
             <div className="relative w-full h-full">
               <button
                 onClick={() => setShowGame(false)}
-                className="absolute top-4 right-16 z-[60] w-10 h-10 rounded-full bg-[#00C853] border-2 border-white/50 shadow-[0_0_15px_rgba(0,200,83,0.6)] flex items-center justify-center text-white font-bold transition-transform active:scale-95 hover:bg-[#00E676]"
+                className="absolute top-4 right-4 z-[60] w-10 h-10 rounded-full bg-[#00C853] border-2 border-white/50 shadow-[0_0_15px_rgba(0,200,83,0.6)] flex items-center justify-center text-white font-bold transition-transform active:scale-95 hover:bg-[#00E676]"
               >
                 ✕
               </button>
