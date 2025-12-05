@@ -130,7 +130,7 @@ export default function EventGameWindow({ onCouponAcquired, lang }: EventGameWin
     const [gems, setGems] = useState(initialGems);
     const [score, setScore] = useState(0);
     const [acquiredCount, setAcquiredCount] = useState(0);
-    const [isMaximized, setIsMaximized] = useState(true);
+    const [acquiredCount, setAcquiredCount] = useState(0);
     const [showRabbit, setShowRabbit] = useState(false);
     const [lastReward, setLastReward] = useState('');
     const [explosions, setExplosions] = useState<{ id: number; position: [number, number, number]; color: string }[]>([]);
@@ -247,9 +247,7 @@ export default function EventGameWindow({ onCouponAcquired, lang }: EventGameWin
 
     return (
         <div
-            className={`relative bg-gradient-to-b from-blue-400 via-purple-400 to-pink-400 overflow-hidden shadow-2xl transition-all duration-500 ease-in-out ${isMaximized ? 'fixed inset-0 z-50 rounded-none' : 'w-full h-full rounded-3xl border-4 border-white'
-                }`}
-            onDoubleClick={toggleMaximize}
+            className="w-full h-full bg-gradient-to-b from-blue-400 via-purple-400 to-pink-400 overflow-hidden shadow-2xl"
         >
             {/* Rabbit Reward Overlay - Scaled to 60% */}
             {showRabbit && (
