@@ -130,7 +130,6 @@ export default function EventGameWindow({ onCouponAcquired, lang }: EventGameWin
     const [gems, setGems] = useState(initialGems);
     const [score, setScore] = useState(0);
     const [acquiredCount, setAcquiredCount] = useState(0);
-    const [acquiredCount, setAcquiredCount] = useState(0);
     const [showRabbit, setShowRabbit] = useState(false);
     const [lastReward, setLastReward] = useState('');
     const [explosions, setExplosions] = useState<{ id: number; position: [number, number, number]; color: string }[]>([]);
@@ -241,10 +240,6 @@ export default function EventGameWindow({ onCouponAcquired, lang }: EventGameWin
         }));
     };
 
-    const toggleMaximize = () => {
-        setIsMaximized(!isMaximized);
-    };
-
     return (
         <div
             className="w-full h-full bg-gradient-to-b from-blue-400 via-purple-400 to-pink-400 overflow-hidden shadow-2xl"
@@ -291,14 +286,9 @@ export default function EventGameWindow({ onCouponAcquired, lang }: EventGameWin
             {/* Window Controls - Hidden since we are full screen */}
             <div className="hidden">
                 <button
-                    onClick={toggleMaximize}
                     className="p-2 bg-white/20 hover:bg-white/30 rounded-full backdrop-blur-md transition-colors border-2 border-white/40 z-50 cursor-pointer text-white"
                 >
-                    {isMaximized ? (
-                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round"><path d="M18 6L6 18M6 6l12 12" /></svg>
-                    ) : (
-                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round"><rect width="18" height="18" x="3" y="3" rx="2" ry="2" /><path d="M9 3v18" /><path d="m15 9 3 3-3 3" /><path d="M9 12h9" /></svg>
-                    )}
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round"><path d="M18 6L6 18M6 6l12 12" /></svg>
                 </button>
             </div>
 
