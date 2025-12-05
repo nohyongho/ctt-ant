@@ -12,7 +12,9 @@ import DailyReportModal from '@/components/consumer/DailyReportModal';
 import LanguageToggle from '@/components/ui/LanguageToggle';
 import { toast } from 'sonner';
 
-export default function ConsumerPage() {
+import { Suspense } from 'react';
+
+function ConsumerPageContent() {
   const router = useRouter();
   const searchParams = useSearchParams();
   const [showGame, setShowGame] = useState(false);
@@ -119,5 +121,13 @@ export default function ConsumerPage() {
         )}
       </AnimatePresence>
     </div>
+  );
+}
+
+export default function ConsumerPage() {
+  return (
+    <Suspense fallback={<div className="w-full h-screen bg-slate-900 flex items-center justify-center text-white">Loading...</div>}>
+      <ConsumerPageContent />
+    </Suspense>
   );
 }
