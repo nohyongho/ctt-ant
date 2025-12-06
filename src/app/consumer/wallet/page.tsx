@@ -2,7 +2,7 @@
 'use client';
 
 import { useEffect, useState, useMemo } from 'react';
-import { Coins, Ticket, CreditCard, MapPin, Navigation, Filter, Search } from 'lucide-react';
+import { Coins, Ticket, CreditCard, MapPin, Navigation, Filter, Search, Trash2 } from 'lucide-react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Input } from '@/components/ui/input';
@@ -34,11 +34,11 @@ export default function WalletPage() {
   const [sortByDistance, setSortByDistance] = useState(true);
 
   // 실제 기기 위치 연동
-  const { 
-    latitude, 
-    longitude, 
+  const {
+    latitude,
+    longitude,
     loading: locationLoading,
-    error: locationError 
+    error: locationError
   } = useGeolocation({
     enableHighAccuracy: true,
     timeout: 15000,
@@ -64,7 +64,7 @@ export default function WalletPage() {
         // 매장 정보와 거리 계산하여 쿠폰에 추가
         const couponsWithStore: CouponWithStore[] = couponsData.map(coupon => {
           // 브랜드명으로 매장 찾기
-          const matchedStore = storesData.find(store => 
+          const matchedStore = storesData.find(store =>
             store.name.includes(coupon.brand) || coupon.brand.includes(store.name)
           );
 
@@ -125,7 +125,7 @@ export default function WalletPage() {
         if (!a.distance && !b.distance) return 0;
         if (!a.distance) return 1;
         if (!b.distance) return -1;
-        
+
         const distA = parseFloat(a.distance.replace(/[^0-9.]/g, ''));
         const distB = parseFloat(b.distance.replace(/[^0-9.]/g, ''));
         return distA - distB;
@@ -138,13 +138,20 @@ export default function WalletPage() {
   // 가까운 매장 쿠폰 (3km 이내)
   const nearbyCoupons = useMemo(() => {
     if (!latitude || !longitude) return [];
-    
+
     return coupons.filter(coupon => {
       if (!coupon.distance || coupon.status !== 'available') return false;
       const dist = parseFloat(coupon.distance.replace(/[^0-9.]/g, ''));
       return dist <= 3;
     });
   }, [coupons, latitude, longitude]);
+
+  // 개별 쿠폰 삭제 핸들러
+  const handleDelete = (id: string) => {
+    if (confirm(language === 'ko' ? '정말 이 쿠폰을 삭제하시겠습니까?' : 'Delete this coupon?')) {
+      setCoupons(prev => prev.filter(c => c.id !== id));
+    }
+  };
 
   if (loading) {
     return (
@@ -155,7 +162,7 @@ export default function WalletPage() {
   }
 
   return (
-    <div className="container mx-auto px-4 py-4 sm:py-6 space-y-4 sm:space-y-6 pb-24">
+    <div className="container mx-auto px-4 py-4 sm:py-6 space-y-4 sm:space-y-6 pb-24 relative min-h-screen">
       {/* 포인트 잔액 카드 */}
       <Card className="bg-gradient-to-br from-primary to-primary/80 text-primary-foreground">
         <CardContent className="p-4 sm:p-6">
@@ -172,7 +179,7 @@ export default function WalletPage() {
       </Card>
 
       {/* 위치 상태 */}
-      <LocationStatus 
+      <LocationStatus
         showRefresh={true}
         compact={true}
       />
@@ -187,8 +194,8 @@ export default function WalletPage() {
               </div>
               <div className="flex-1">
                 <p className="font-medium text-sm">
-                  {language === 'ko' 
-                    ? `근처에서 사용 가능한 쿠폰 ${nearbyCoupons.length}개!` 
+                  {language === 'ko'
+                    ? `근처에서 사용 가능한 쿠폰 ${nearbyCoupons.length}개!`
                     : `${nearbyCoupons.length} coupons available nearby!`}
                 </p>
                 <p className="text-xs text-muted-foreground">
@@ -233,21 +240,20 @@ export default function WalletPage() {
               />
             </div>
 
-            <div className="flex gap-2 overflow-x-auto pb-2 scrollbar-hide">
-              {(['all', 'available', 'used', 'expired'] as const).map((status) => (
+            <div className="flex gap-2 overflow-x-auto pb-2 scrollbar-hide items-center">
+              {(['all', 'available', 'used'] as const).map((status) => (
                 <Badge
                   key={status}
                   variant={filterStatus === status ? 'default' : 'outline'}
-                  className="cursor-pointer whitespace-nowrap"
+                  className="cursor-pointer whitespace-nowrap px-4 py-2"
                   onClick={() => setFilterStatus(status)}
                 >
                   {status === 'all' && (language === 'ko' ? '전체' : 'All')}
                   {status === 'available' && (language === 'ko' ? '사용가능' : 'Available')}
                   {status === 'used' && (language === 'ko' ? '사용완료' : 'Used')}
-                  {status === 'expired' && (language === 'ko' ? '만료' : 'Expired')}
                 </Badge>
               ))}
-              
+
               <Button
                 variant={sortByDistance ? 'default' : 'outline'}
                 size="sm"
@@ -274,14 +280,29 @@ export default function WalletPage() {
               </CardContent>
             </Card>
           ) : (
-            filteredCoupons.map((coupon) => (
-              <CouponCard 
-                key={coupon.id} 
-                coupon={coupon}
-                distance={coupon.distance}
-                storeName={coupon.store?.name}
-              />
-            ))
+            <div className="space-y-4 pb-20">
+              {filteredCoupons.map((coupon) => (
+                <div key={coupon.id} className="relative group flex items-stretch gap-2">
+                  <div className="flex-1 min-w-0">
+                    <CouponCard
+                      coupon={coupon}
+                      distance={coupon.distance}
+                      storeName={coupon.store?.name}
+                    />
+                  </div>
+
+                  {/* 삭제 버튼 - 쿠폰 옆에 위치 */}
+                  <Button
+                    variant="destructive"
+                    className="h-auto w-16 flex-shrink-0 flex flex-col items-center justify-center rounded-xl bg-red-500 hover:bg-red-600 shadow-sm"
+                    onClick={() => handleDelete(coupon.id)}
+                  >
+                    <Trash2 className="h-5 w-5 mb-1" />
+                    <span className="text-xs font-bold">{language === 'ko' ? '삭제' : 'Del'}</span>
+                  </Button>
+                </div>
+              ))}
+            </div>
           )}
         </TabsContent>
 
@@ -303,11 +324,10 @@ export default function WalletPage() {
                     </p>
                   </div>
                   <p
-                    className={`font-bold text-sm sm:text-base ${
-                      history.type === 'earned'
-                        ? 'text-green-600'
-                        : 'text-red-600'
-                    }`}
+                    className={`font-bold text-sm sm:text-base ${history.type === 'earned'
+                      ? 'text-green-600'
+                      : 'text-red-600'
+                      }`}
                   >
                     {history.type === 'earned' ? '+' : '-'}
                     {Math.abs(history.amount).toLocaleString()}P

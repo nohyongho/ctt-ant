@@ -17,6 +17,18 @@ export interface Coupon {
   status: 'available' | 'used' | 'expired';
   expiresAt: string;
   imageUrl?: string;
+  discountRate?: number;
+  issuerInfo?: {
+    name: string;
+    brand: string;
+    mobile: string;
+    email: string;
+    regNo: string;
+    corpName: string;
+    ceo: string;
+    corpRegNo: string;
+    address: string;
+  };
 }
 
 export interface PointHistory {

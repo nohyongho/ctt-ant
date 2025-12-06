@@ -199,45 +199,7 @@ export default function LandingPage() {
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.8 }}
           >
-            {/* Real-time Event LED Button */}
-            <motion.div
-              initial={{ scale: 0.9, opacity: 0 }}
-              animate={{ scale: 1, opacity: 1 }}
-              transition={{ delay: 0.2 }}
-              className="mb-6 sm:mb-8"
-            >
-              <Button
-                onClick={() => router.push('/consumer?game=true')}
-                className="relative overflow-hidden bg-black/80 hover:bg-black border-2 border-white/20 rounded-full px-8 py-6 shadow-[0_0_20px_rgba(0,0,0,0.5)] group transform hover:scale-105 transition-all duration-300"
-              >
-                {/* LED Glow Effect */}
-                <div className="absolute inset-0 bg-gradient-to-r from-red-500/20 via-green-500/20 to-yellow-500/20 animate-pulse" />
 
-                {/* Animated Text */}
-                <motion.span
-                  className="relative text-lg sm:text-xl font-black tracking-wider z-10"
-                  animate={{
-                    color: ['#FFD600', '#FF3D00', '#00C853', '#FFD600'],
-                    textShadow: [
-                      '0 0 10px rgba(255, 214, 0, 0.8)',
-                      '0 0 10px rgba(255, 61, 0, 0.8)',
-                      '0 0 10px rgba(0, 200, 83, 0.8)',
-                      '0 0 10px rgba(255, 214, 0, 0.8)'
-                    ]
-                  }}
-                  transition={{
-                    duration: 2,
-                    repeat: Infinity,
-                    ease: "linear"
-                  }}
-                >
-                  실시간 이벤트
-                </motion.span>
-
-                {/* Shine Effect */}
-                <div className="absolute top-0 left-0 w-full h-1/2 bg-gradient-to-b from-white/20 to-transparent rounded-t-full pointer-events-none" />
-              </Button>
-            </motion.div>
 
             <Badge className="mb-4 sm:mb-6 bg-gradient-to-r from-cyan-500/10 via-purple-500/10 to-pink-500/10 text-primary border-purple-500/20 px-3 sm:px-4 py-1 sm:py-1.5 text-xs sm:text-sm">
               <MapPin className="w-3 h-3 mr-1" />
@@ -272,6 +234,22 @@ export default function LandingPage() {
                 특허 10-2022-0166543
               </Badge>
             </motion.div>
+          </motion.div>
+
+          {/* Real-time Event Button (Restored) */}
+          <motion.div
+            initial={{ opacity: 0, scale: 0.9 }}
+            animate={{ opacity: 1, scale: 1 }}
+            transition={{ duration: 0.5, delay: 0.15 }}
+            className="flex justify-center mb-8"
+          >
+            <Button
+              className="rounded-full bg-black/80 backdrop-blur-xl border-2 border-[#FFD600] text-[#FFD600] px-10 py-6 text-2xl font-black tracking-wider shadow-[0_0_30px_rgba(255,214,0,0.4)] hover:shadow-[0_0_50px_rgba(255,214,0,0.6)] hover:bg-black transition-all animate-pulse"
+              onClick={() => router.push('/consumer')}
+            >
+              <Zap className="w-6 h-6 mr-2 fill-[#FFD600]" />
+              실시간 이벤트
+            </Button>
           </motion.div>
 
           {/* Main Action Buttons */}

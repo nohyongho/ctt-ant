@@ -90,21 +90,16 @@ function ConsumerPageContent() {
       <AnimatePresence>
         {showGame && (
           <motion.div
-            initial={{ opacity: 0, scale: 0.8 }}
-            animate={{ opacity: 1, scale: 1 }}
-            exit={{ opacity: 0, scale: 0.8 }}
-            className="fixed inset-0 z-50 bg-black"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            className="fixed inset-0 z-[9999] bg-black"
           >
-            <div className="relative w-full h-full">
-              <button
-                onClick={() => setShowGame(false)}
-                className="absolute top-4 right-4 z-[60] w-10 h-10 rounded-full bg-[#00C853] border-2 border-white/50 shadow-[0_0_15px_rgba(0,200,83,0.6)] flex items-center justify-center text-white font-bold transition-transform active:scale-95 hover:bg-[#00E676]"
-              >
-                ✕
-              </button>
+            <div className="absolute inset-0 w-full h-full m-0 p-0 overflow-hidden">
               <EventGameWindow
                 onCouponAcquired={handleCouponAcquired}
                 lang={lang}
+                onClose={() => setShowGame(false)}
               />
             </div>
           </motion.div>

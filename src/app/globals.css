@@ -9,79 +9,75 @@ nextjs-portal,
 @variant dark (&:where(.dark, .dark *));
 
 :root {
-  /* Warm & Playful Palette */
-  --color-background: oklch(from #f8f9fa l c h);
-  /* Slightly warmer background */
-  --color-foreground: oklch(from #1a1a1a l c h);
+  /* Apple-like Pastel & Glass Palette */
+  --color-background: oklch(from #f5f5f7 l c h); /* Apple's light gray background */
+  --color-foreground: oklch(from #1d1d1f l c h); /* Apple's dark gray text */
 
   --color-card: oklch(from white l c h);
-  --color-card-foreground: oklch(from #1a1a1a l c h);
+  --color-card-foreground: oklch(from #1d1d1f l c h);
 
   --color-popover: oklch(from white l c h);
-  --color-popover-foreground: oklch(from #1a1a1a l c h);
+  --color-popover-foreground: oklch(from #1d1d1f l c h);
 
-  /* Vibrant Green (Main Action / Success) */
-  --color-primary: oklch(from #00C853 l c h);
+  /* Soft Pastel Colors for "Apple" feel */
+  --color-primary: oklch(from #0071e3 l c h); /* Apple Blue */
   --color-primary-foreground: oklch(from white l c h);
 
-  /* Vibrant Yellow (Highlight / Warning) */
-  --color-secondary: oklch(from #FFD600 l c h);
-  --color-secondary-foreground: oklch(from black l c h);
+  --color-secondary: oklch(from #f5f5f7 l c h);
+  --color-secondary-foreground: oklch(from #1d1d1f l c h);
 
-  /* Vibrant Blue (Info / Accent) */
-  --color-accent: oklch(from #2962FF l c h);
+  --color-accent: oklch(from #0071e3 l c h); /* Unified Accent */
   --color-accent-foreground: oklch(from white l c h);
 
-  /* Vibrant Red (Destructive / Important) */
-  --color-destructive: oklch(from #FF3D00 l c h);
+  --color-destructive: oklch(from #ff3b30 l c h); /* Apple Red */
   --color-destructive-foreground: oklch(from white l c h);
 
-  --color-muted: oklch(from #f1f5f9 l c h);
-  --color-muted-foreground: oklch(from #64748b l c h);
+  --color-muted: oklch(from #86868b l c h);
+  --color-muted-foreground: oklch(from #6e6e73 l c h);
 
-  --color-border: oklch(from #e2e8f0 l c h);
-  --color-input: oklch(from #e2e8f0 l c h);
-  --color-ring: oklch(from #00C853 l c h);
+  --color-border: oklch(from #d2d2d7 l c h);
+  --color-input: oklch(from #d2d2d7 l c h);
+  --color-ring: oklch(from #0071e3 l c h);
 
-  --radius: 1.5rem;
-  /* More rounded */
+  --radius: 1.5rem; /* 24px - Very rounded */
 
-  --color-chart-1: oklch(from #00C853 l c h);
-  --color-chart-2: oklch(from #FFD600 l c h);
-  --color-chart-3: oklch(from #2962FF l c h);
-  --color-chart-4: oklch(from #FF3D00 l c h);
-  --color-chart-5: oklch(from #AA00FF l c h);
+  /* Pastel Chart Colors */
+  --color-chart-1: oklch(85% 0.1 140); /* Pastel Green */
+  --color-chart-2: oklch(85% 0.1 80);  /* Pastel Orange */
+  --color-chart-3: oklch(85% 0.1 260); /* Pastel Blue */
+  --color-chart-4: oklch(85% 0.1 20);  /* Pastel Red */
+  --color-chart-5: oklch(85% 0.1 300); /* Pastel Purple */
 }
 
 .dark {
-  --color-background: oklch(from #121212 l c h);
-  --color-foreground: oklch(from #ffffff l c h);
+  /* Apple Dark Mode */
+  --color-background: oklch(from #000000 l c h);
+  --color-foreground: oklch(from #f5f5f7 l c h);
 
-  --color-card: oklch(from #1e1e1e l c h);
-  --color-card-foreground: oklch(from #ffffff l c h);
+  --color-card: oklch(from #1c1c1e l c h);
+  --color-card-foreground: oklch(from #f5f5f7 l c h);
 
-  --color-popover: oklch(from #1e1e1e l c h);
-  --color-popover-foreground: oklch(from #ffffff l c h);
+  --color-popover: oklch(from #1c1c1e l c h);
+  --color-popover-foreground: oklch(from #f5f5f7 l c h);
 
-  /* Keep vibrant colors even in dark mode */
-  --color-primary: oklch(from #00E676 l c h);
-  --color-primary-foreground: oklch(from black l c h);
+  --color-primary: oklch(from #0a84ff l c h); /* Dark Mode Blue */
+  --color-primary-foreground: oklch(from white l c h);
 
-  --color-secondary: oklch(from #FFEA00 l c h);
-  --color-secondary-foreground: oklch(from black l c h);
+  --color-secondary: oklch(from #1c1c1e l c h);
+  --color-secondary-foreground: oklch(from #f5f5f7 l c h);
 
-  --color-accent: oklch(from #448AFF l c h);
+  --color-accent: oklch(from #0a84ff l c h);
   --color-accent-foreground: oklch(from white l c h);
 
-  --color-destructive: oklch(from #FF5252 l c h);
+  --color-destructive: oklch(from #ff453a l c h); /* Dark Mode Red */
   --color-destructive-foreground: oklch(from white l c h);
 
-  --color-muted: oklch(from #334155 l c h);
-  --color-muted-foreground: oklch(from #94a3b8 l c h);
+  --color-muted: oklch(from #424245 l c h);
+  --color-muted-foreground: oklch(from #86868b l c h);
 
-  --color-border: oklch(from #334155 l c h);
-  --color-input: oklch(from #334155 l c h);
-  --color-ring: oklch(from #00E676 l c h);
+  --color-border: oklch(from #38383a l c h);
+  --color-input: oklch(from #38383a l c h);
+  --color-ring: oklch(from #0a84ff l c h);
 }
 
 @theme inline {
@@ -118,13 +114,16 @@ nextjs-portal,
     @apply border-border;
   }
 
-  body {
-    @apply bg-background text-foreground;
-    font-feature-settings: "rlig" 1, "calt" 1;
+  /* Global Scaling - 80% (4/5) Size */
+  html {
+    font-size: 80%; /* 16px * 0.8 = 12.8px base */
+    scroll-behavior: smooth;
   }
 
-  html {
-    scroll-behavior: smooth;
+  body {
+    @apply bg-background text-foreground antialiased;
+    font-feature-settings: "rlig" 1, "calt" 1;
+    letter-spacing: -0.01em; /* Tight Apple-style tracking */
   }
 
   .glass {

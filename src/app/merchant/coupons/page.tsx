@@ -571,7 +571,23 @@ export default function MerchantCouponsPage() {
                           <Users className="w-4 h-4" />
                           {coupon.usedQuantity} / {coupon.totalQuantity} 사용
                         </div>
-                        <div className="flex-1 text-right">
+
+                        {/* Status Badge */}
+                        <div className="flex-1 text-right flex items-center justify-end gap-2">
+                          {/* [NEW] Quick Delete Button */}
+                          <Button
+                            variant="ghost"
+                            size="sm"
+                            className="h-6 w-6 p-0 text-gray-400 hover:text-red-500 hover:bg-red-500/10 rounded-full transition-colors"
+                            onClick={(e) => {
+                              e.stopPropagation(); // Prevent card click if any
+                              setSelectedCoupon(coupon);
+                              setIsDeleteOpen(true);
+                            }}
+                          >
+                            <Trash2 className="w-3.5 h-3.5" />
+                          </Button>
+
                           <span
                             className={`inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full text-xs font-medium ${coupon.status === 'ACTIVE'
                               ? 'bg-emerald-500/10 text-emerald-500'
