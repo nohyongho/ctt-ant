@@ -499,13 +499,21 @@ export default function EventGameWindow({ onCouponAcquired, onClose, lang }: Eve
                                     alt="Rabbit and Child in Cup"
                                     className="w-64 h-64 object-contain drop-shadow-2xl"
                                     animate={{
-                                        y: [0, -10, 0], // Gentle float
-                                        rotate: [0, -2, 2, 0]
+                                        // Pendulum Swing (Left-Right Sway)
+                                        rotate: [0, 10, 0, -10, 0],
+                                        y: [0, -5, 0] // Gentle bob
                                     }}
                                     transition={{
-                                        duration: 3,
-                                        repeat: Infinity,
-                                        ease: "easeInOut"
+                                        rotate: {
+                                            duration: 2.5,
+                                            repeat: Infinity,
+                                            ease: "easeInOut"
+                                        },
+                                        y: {
+                                            duration: 2,
+                                            repeat: Infinity,
+                                            ease: "easeInOut"
+                                        }
                                     }}
                                 />
                             </motion.div>
