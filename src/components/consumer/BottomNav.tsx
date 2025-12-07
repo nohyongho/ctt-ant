@@ -1,8 +1,9 @@
 'use client';
 
 import React from 'react';
-import { Home, Phone, User, Wallet } from 'lucide-react';
+import { Home, Phone, User, Wallet, ShoppingBag } from 'lucide-react';
 import { motion } from 'framer-motion';
+import Link from 'next/link';
 
 export default function BottomNav() {
     return (
@@ -12,8 +13,12 @@ export default function BottomNav() {
             className="absolute bottom-8 left-1/2 -translate-x-1/2 z-20"
         >
             <div className="flex items-center gap-2 bg-white/10 backdrop-blur-xl px-6 py-3 rounded-full border border-white/20 shadow-2xl">
-                <NavItem icon={<Home className="w-6 h-6" />} active />
-                <NavItem icon={<Phone className="w-6 h-6" />} />
+                <Link href="/consumer">
+                    <NavItem icon={<Home className="w-6 h-6" />} active />
+                </Link>
+                <Link href="/consumer/market">
+                    <NavItem icon={<ShoppingBag className="w-6 h-6" />} />
+                </Link>
 
                 {/* Center Action Button (3D Rabbit) */}
                 <div className="relative -top-8 mx-2">
