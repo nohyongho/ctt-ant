@@ -67,7 +67,7 @@ export default function MarketPage() {
         { id: 'all', label: '전체', icon: <Filter size={14} /> },
         { id: 'coupon', label: '쿠폰거래', icon: <Gift size={14} /> },
         { id: 'store', label: '입점매장', icon: <Crown size={14} /> },
-        { id: 'sharing', label: '희망나눔', icon: <Heart size={14} /> },
+        { id: 'sharing', label: '구름나라', icon: <Heart size={14} /> }, // Changed from 희망나눔
     ];
 
     return (
@@ -143,7 +143,7 @@ export default function MarketPage() {
                                     ${item.type === 'sharing' ? 'bg-[#00C853]' :
                                         item.type === 'store' ? 'bg-[#AA00FF]' : 'bg-blue-500'}`}
                                 >
-                                    {item.badge}
+                                    {item.type === 'sharing' ? '행복선물' : item.badge}
                                 </div>
                             </div>
 
@@ -162,7 +162,7 @@ export default function MarketPage() {
                                 <div className="flex items-end justify-between mt-2">
                                     <div className="flex flex-col">
                                         {item.price === 0 ? (
-                                            <span className="text-[#00C853] font-black text-lg">나눔 🧡</span>
+                                            <span className="text-[#00C853] font-black text-lg">선물 🎁</span>
                                         ) : (
                                             <>
                                                 {item.originalPrice && (
