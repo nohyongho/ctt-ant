@@ -13,6 +13,7 @@ import * as THREE from 'three';
 import { walletService } from '@/lib/wallet-service';
 import { Sparkles as SparklesIcon } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
+import { WeatherOverlay } from '@/components/effects/WeatherOverlay';
 
 interface FallingGemProps {
     id: number;
@@ -701,7 +702,11 @@ export default function EventGameWindow({ onCouponAcquired, onClose, lang }: Eve
                     <Explosion key={exp.id} position={exp.position} color={exp.color} />
                 ))}
 
-                <Snow />
+                {/* Weather Effect System */}
+                {/* User Request: Connect Weather API later, currently Test Mode (Snow Only) 
+                    Size: 20-30% of Gem Size -> Handled in WeatherOverlay
+                */}
+                <WeatherOverlay type="snow" intensity={1.5} />
             </Canvas>
         </div>
     );
