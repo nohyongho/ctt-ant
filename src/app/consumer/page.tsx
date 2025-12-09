@@ -1,128 +1,112 @@
+
 'use client';
 
-import React, { useState, useEffect } from 'react';
-import { useRouter, useSearchParams } from 'next/navigation';
-import { AnimatePresence, motion } from 'framer-motion';
-import MapBackground from '@/components/consumer/MapBackground';
-import MissionOverlay from '@/components/consumer/MissionOverlay';
-import MonsterPin from '@/components/consumer/MonsterPin';
-import BottomNav from '@/components/consumer/BottomNav';
-import EventGameWindow from '@/components/consumer/EventGameWindow';
-import DailyReportModal from '@/components/consumer/DailyReportModal';
-import LanguageToggle from '@/components/ui/LanguageToggle';
-import { toast } from 'sonner';
+import { motion } from 'framer-motion';
+import { AIRCTT_CATEGORIES } from '@/lib/constants/categories';
+import { useRouter } from 'next/navigation';
+import { Search, MapPin, Bell } from 'lucide-react';
+import { Input } from '@/components/ui/input';
+import { Button } from '@/components/ui/button';
 
-import { Suspense } from 'react';
-
-function ConsumerPageContent() {
+export default function MarketplaceMain() {
   const router = useRouter();
-  const searchParams = useSearchParams();
-  const [showGame, setShowGame] = useState(false);
-  const [showDailyReport, setShowDailyReport] = useState(false); // Disabled by default for better flow
-  const [activeMonster, setActiveMonster] = useState<any>(null);
-  const [lang, setLang] = useState<'ko' | 'en'>('ko');
-
-  // Check for game auto-start
-  useEffect(() => {
-    const shouldStartGame = searchParams.get('game') === 'true';
-    if (shouldStartGame) {
-      setShowGame(true);
-      setShowDailyReport(false);
-    }
-  }, [searchParams]);
-
-  // Mock Data for Monsters on Map
-  const monsters = [
-    { id: 1, x: '20%', y: '30%', color: '#FFD600', type: 'gold' },
-    { id: 2, x: '70%', y: '45%', color: '#00C853', type: 'green' },
-    { id: 3, x: '40%', y: '60%', color: '#2962FF', type: 'blue' },
-    { id: 4, x: '80%', y: '20%', color: '#FF3D00', type: 'red' },
-  ];
-
-  const handleMonsterClick = (monster: any) => {
-    setActiveMonster(monster);
-    setShowGame(true);
-  };
-
-  const handleCouponAcquired = (amount: number, name: string) => {
-    toast.success(lang === 'ko' ? `${name} 획득! (+${amount}P)` : `Caught ${name}! (+${amount}P)`, {
-      style: { background: '#00C853', color: 'white', border: 'none' },
-      icon: '🎉'
-    });
-    // In a real app, we would remove the monster from the map or mark it as caught
-  };
-
-  const toggleLang = () => {
-    setLang(prev => prev === 'ko' ? 'en' : 'ko');
-  };
 
   return (
-    <div className="relative w-full h-screen overflow-hidden bg-slate-900">
-      <MapBackground>
-        {/* Language Toggle */}
-        <div className="absolute top-4 right-4 z-50">
-          <LanguageToggle lang={lang} onToggle={toggleLang} />
+    <div className="min-h-screen bg-slate-50 pb-20">
+      {/* Header - Transparent Sticky */}
+      <header className="sticky top-0 z-40 bg-white/80 backdrop-blur-md border-b">
+        <div className="flex items-center justify-between px-4 h-16 max-w-md mx-auto">
+          <div className="flex items-center gap-1">
+            <span className="font-extrabold text-2xl bg-gradient-to-r from-indigo-500 via-purple-500 to-pink-500 bg-clip-text text-transparent">
+              AIRCTT
+            </span>
+            <span className="text-xs font-bold text-slate-400 border border-slate-200 px-1 rounded">BETA</span>
+          </div>
+          <div className="flex items-center gap-3">
+            <Button variant="ghost" size="icon" className="text-slate-600">
+              <MapPin className="w-5 h-5" />
+            </Button>
+            <Button variant="ghost" size="icon" className="text-slate-600">
+              <Bell className="w-5 h-5" />
+            </Button>
+          </div>
         </div>
 
-        {/* Mission Overlay */}
-        <MissionOverlay lang={lang} />
-
-        {/* Monsters on Map */}
-        {monsters.map((monster, index) => (
-          <div
-            key={monster.id}
-            className="absolute"
-            style={{ left: monster.x, top: monster.y }}
-          >
-            <MonsterPin
-              color={monster.color}
-              delay={index * 0.2}
-              onClick={() => handleMonsterClick(monster)}
+        {/* Search Bar */}
+        <div className="px-4 pb-3 max-w-md mx-auto">
+          <div className="relative">
+            <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-400" />
+            <Input
+              placeholder="맛집, 공연, 핫플레이스 검색..."
+              className="pl-9 bg-slate-100 border-none h-10 rounded-xl focus-visible:ring-indigo-500"
             />
           </div>
-        ))}
+        </div>
+      </header>
 
-        {/* Bottom Navigation */}
-        <BottomNav />
-      </MapBackground>
+      {/* Main Content */}
+      <main className="max-w-md mx-auto p-4 space-y-8">
 
-      {/* Game Modal */}
-      <AnimatePresence>
-        {showGame && (
-          <motion.div
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            exit={{ opacity: 0 }}
-            className="fixed inset-0 z-[9999] bg-black"
-          >
-            <div className="absolute inset-0 w-full h-full m-0 p-0 overflow-hidden">
-              <EventGameWindow
-                onCouponAcquired={handleCouponAcquired}
-                lang={lang}
-                onClose={() => setShowGame(false)}
-              />
-            </div>
-          </motion.div>
-        )}
-      </AnimatePresence>
+        {/* Hero Banner (Event) */}
+        <section className="relative h-48 rounded-2xl overflow-hidden shadow-lg cursor-pointer transform transition hover:scale-[1.02]">
+          <div className="absolute inset-0 bg-gradient-to-r from-violet-600 to-indigo-600" />
+          <div className="absolute inset-0 flex flex-col justify-center p-6 text-white">
+            <span className="bg-white/20 w-fit px-2 py-1 rounded text-xs font-bold mb-2 backdrop-blur-sm">Real-time Event</span>
+            <h2 className="text-2xl font-bold leading-tight mb-1">지금 접속하면<br />50% 쿠폰 잭팟! 💎</h2>
+            <p className="text-sm opacity-90">내 주변 하늘에서 선물이 쏟아집니다.</p>
+          </div>
+          {/* 3D or Image placeholder */}
+          <div className="absolute right-[-20px] bottom-[-20px] w-32 h-32 bg-yellow-300 rounded-full blur-2xl opacity-50" />
+        </section>
 
-      {/* Daily Report Modal */}
-      <AnimatePresence>
-        {showDailyReport && (
-          <DailyReportModal
-            onClose={() => setShowDailyReport(false)}
-            lang={lang}
-          />
-        )}
-      </AnimatePresence>
+        {/* Categories Grid */}
+        <section>
+          <div className="flex justify-between items-end mb-4">
+            <h3 className="font-bold text-lg text-slate-800">어디로 갈까요?</h3>
+            <span className="text-xs text-slate-400">전체보기</span>
+          </div>
+          <div className="grid grid-cols-4 gap-4">
+            {AIRCTT_CATEGORIES.map((cat, idx) => (
+              <motion.div
+                key={cat.id}
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ delay: idx * 0.05 }}
+                onClick={() => router.push(`/consumer/market/category/${cat.id}`)}
+                className="flex flex-col items-center gap-2 cursor-pointer group"
+              >
+                <div className={`w-14 h-14 rounded-2xl bg-gradient-to-br ${cat.color} flex items-center justify-center text-white shadow-md group-active:scale-95 transition-transform`}>
+                  <cat.icon className="w-6 h-6" />
+                </div>
+                <span className="text-xs font-medium text-slate-600 text-center">{cat.name}</span>
+              </motion.div>
+            ))}
+          </div>
+        </section>
+
+        {/* Popular / Recommended (Placeholder for Step 1) */}
+        <section>
+          <h3 className="font-bold text-lg text-slate-800 mb-4">🔥 지금 뜨는 핫플레이스</h3>
+          <div className="space-y-4">
+            {[1, 2, 3].map((i) => (
+              <div key={i} className="flex gap-4 bg-white p-3 rounded-xl border border-slate-100 shadow-sm" onClick={() => router.push(`/consumer/market/store/${i}`)}>
+                <div className="w-24 h-24 bg-slate-200 rounded-lg flex-shrink-0" />
+                <div className="flex-1 flex flex-col justify-between py-1">
+                  <div>
+                    <h4 className="font-bold text-slate-900">AIRCTT 강남 {i}호점</h4>
+                    <p className="text-xs text-slate-500 mt-1">서울 강남구 테헤란로 123</p>
+                  </div>
+                  <div className="flex gap-2">
+                    <span className="bg-red-50 text-red-600 text-xs px-2 py-0.5 rounded font-medium">쿠폰 2개</span>
+                    <span className="bg-slate-100 text-slate-600 text-xs px-2 py-0.5 rounded">거리 0.5km</span>
+                  </div>
+                </div>
+              </div>
+            ))}
+          </div>
+        </section>
+
+      </main>
     </div>
-  );
-}
-
-export default function ConsumerPage() {
-  return (
-    <Suspense fallback={<div className="w-full h-screen bg-slate-900 flex items-center justify-center text-white">Loading...</div>}>
-      <ConsumerPageContent />
-    </Suspense>
   );
 }

@@ -366,17 +366,70 @@ export default function EventGameWindow({ onCouponAcquired, onClose, lang }: Eve
         const winPercent = drawCoupon();
 
         if (winPercent !== null) {
+            // Success Logic
             if (winPercent >= 50) {
                 // High Tier -> Trigger Anticipation Sequence
                 setPreviewMode(true);
                 setPreviewTier(winPercent);
-                // Play anticipation cue here if possible (simulated by logic)
-
                 const delay = winPercent === 100 ? 5000 : (winPercent >= 70 ? 3000 : 2000);
                 setTimeout(() => finalizeWin(winPercent), delay);
             } else {
                 finalizeWin(winPercent);
             }
+
+            // --- API INTEGRATION START ---
+            // 1. Start Game Session (if not already tracked properly, but here we treat interaction as a "mini-game" or session conclusion)
+            // For MVP: We assume one "click" that wins is a successful "session".
+
+            // NOTE: In a real app, you might start the session on Component Mount. 
+            // Here we treat the 'Win' interaction as the critical moment to record.
+
+            // Simulate Consumer ID (In real app, get from Context/Auth)
+            const consumerIdMock = '00000000-0000-0000-0000-000000000000'; // Replace with real ID later
+
+            (async () => {
+                try {
+                    // A. Start Session
+                    const startRes = await fetch('/api/game/start', {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify({
+                            consumer_id: consumerIdMock,
+                            game_type: 'BUBBLE_5STEP_V1'
+                        })
+                    });
+                    const startData = await startRes.json();
+
+                    if (startData.session_id) {
+                        // B. Finish Session (Report Success)
+                        const finishRes = await fetch('/api/game/finish', {
+                            method: 'POST',
+                            headers: { 'Content-Type': 'application/json' },
+                            body: JSON.stringify({
+                                session_id: startData.session_id,
+                                steps_cleared: 5,
+                                success: true,
+                                client_info: { win_percent: winPercent }
+                            })
+                        });
+                        const finishData = await finishRes.json();
+
+                        if (finishData.reward_id) {
+                            // C. Claim Reward (Issue Coupon/Points)
+                            await fetch('/api/rewards/claim', {
+                                method: 'POST',
+                                headers: { 'Content-Type': 'application/json' },
+                                body: JSON.stringify({ reward_id: finishData.reward_id })
+                            });
+                            console.log('Reward Claimed via API');
+                        }
+                    }
+                } catch (e) {
+                    console.error('Game API Error (Mock Mode Active):', e);
+                }
+            })();
+            // --- API INTEGRATION END ---
+
         } else {
             // NORMAL CLICK / LOSS
             playSound('tok');

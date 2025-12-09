@@ -4,7 +4,7 @@ const POSTGREST_URL = process.env.POSTGREST_URL || "";
 const POSTGREST_SCHEMA = process.env.POSTGREST_SCHEMA || "public";
 const POSTGREST_API_KEY = process.env.POSTGREST_API_KEY || "";
 
-export function createPostgrestClient() {
+export function createPostgrestClient(token?: string) {
   const client = new PostgrestClient(POSTGREST_URL, {
     schema: POSTGREST_SCHEMA,
     fetch: (...args) => {
@@ -32,5 +32,10 @@ export function createPostgrestClient() {
   if (POSTGREST_API_KEY) {
     client.headers.set("Postgrest-API-Key", POSTGREST_API_KEY);
   }
+
+  if (token) {
+    client.headers.set("Authorization", `Bearer ${token}`);
+  }
+
   return client;
 }

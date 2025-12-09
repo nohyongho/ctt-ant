@@ -5,7 +5,7 @@ export interface UserProfile {
   email: string;
   nickname?: string;
   avatarUrl?: string;
-  provider: 'GOOGLE' | 'KAKAO' | 'EMAIL';
+  provider: string;
   createdAt: string;
 }
 
